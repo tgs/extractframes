@@ -1,0 +1,9 @@
+*.pyc
+.svn
+cover
+dist
+*.egg-info
+.coverage
+tags
+*,cover
+build

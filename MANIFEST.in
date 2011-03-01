@@ -1,0 +1,3 @@
+recursive-include fixtures *
+include test_extract.sh
+graft tests
