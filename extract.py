@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import optparse
 import extractframes
+from extractframes.timespec import time_to_frame
 
 parser = optparse.OptionParser(usage="%prog infile outfmt [options]")
 
@@ -14,20 +15,36 @@ parser.add_option('--stretch-to', '--squish-to', dest='out_count', type='int',
         help="linearly sample from input images to end up with NUM frames of output.  "
         "For instance, if your video is 50 frames long and you say --stretch-to 75, "
         "every other frame will be duplicated so that you get 1.5 * 50 = 75 frames.")
+parser.add_option('--take-times', dest='in_times', type='string',
+        metavar='TIMERANGE',
+        help="extract only frames that fall within the given time range, "
+        "assuming that the frame rate of the video is 29.97 frames per second.")
 
 
-def parse_frame_range(range_str):
-    """Parses a frame range like 234-789 into a tuple (234, 789)
+
+def parse_range(range_str):
+    """Parses a range like 234-789 into a tuple (234, 789)
     """
     parts = range_str.split('-')
-    return tuple(int(s) for s in parts)
+    if len(parts) != 2:
+        parser.error("Ranges can only have two parts: start-end")
+    return tuple(float(s) for s in parts)
 
 if __name__ == '__main__':
     (opts, args) = parser.parse_args()
-    if opts.in_bounds:
-        bounds_tuple = parse_frame_range(opts.in_bounds)
+
+    if opts.in_bounds and opts.in_times:
+        parser.error("Options --take and --take-times are mutually exclusive")
+    elif opts.in_bounds:
+        raw_range = parse_range(opts.in_bounds)
+        bounds_tuple = tuple(int(x) for x in raw_range)
+        if any(t[0] != t[1] for t in zip(raw_range, bounds_tuple)):
+            parser.error("Frame numbers must be integers")
+    elif opts.in_times:
+        bounds_tuple = tuple(time_to_frame(t) for t in parse_range(opts.in_times))
     else:
         bounds_tuple = None
+
     if len(args) < 2:
         parser.error("Input file and Output file format are required")
 
