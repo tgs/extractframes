@@ -41,15 +41,29 @@ Options
    :samp:`extract.py --take 10-20 infile.avi out%d.jpg`, then you would get
    :file:`out0.jpg` through :file:`out10.jpg` (eleven frames).  This is not
    particularly efficient, see :ref:`this discussion <correct-not-fast>`.
+ 
+.. option:: --take-times <BEGIN-END>
+   
+   After extracting all the frames from the input, take only the frames
+   that fall between BEGIN and END seconds from the start of the video.
+   The video is assumed to be at 29.97 frames per second for this
+   calculation.  For example, if you said :samp:`extract.py --take-times
+   0-15.5 infile.avi out%d.jpg`, then you would get :file:`out0.jpg`
+   through :file:`out464.jpg` (465 frames).  If you're counting frames,
+   you should know that the American standard frame rate is actually not
+   29.97 but :math:`30 * \frac{1000}{1001} \approx 29.970029970` frames per
+   second.  This is only important if you have many thousands of
+   frames.
 
 .. option:: --stretch-to <FRAMES>, --squish-to <FRAMES>
 
    Change how many frames there will be in the output, by stretching or
-   squishing time---that is, by changing the frame rate.  If your input has
-   100 frames and you say `--stretch-to 200`, then the output will have two
-   copies of each frame.  This option is applied *after* :option:`--take`,
-   so :program:`extract.py` will *first* take the frames that you select, and
-   *then* stretch or squish those frames to fill the output requirement.
+   squishing time---that is, by changing the frame rate.  If your input
+   has 100 frames and you say `--stretch-to 200`, then the output will
+   have two copies of each frame.  This option is applied *after*
+   :option:`--take` or :option:`--take-times`, so :program:`extract.py`
+   will *first* take the frames that you select, and *then* stretch or
+   squish those frames to fill the output requirement.
 
 
 

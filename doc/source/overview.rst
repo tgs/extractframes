@@ -9,7 +9,7 @@ from it as JPEG files.  It can give you just a particular range of the
 frames, and it can change the frame rate by :ref:`Linear Frame Sampling`.  So
 for instance, if you want half as many frames as there are in the input, it
 will take every other frame.  If you want twice as many frames, it will take
-every frame twice.
+every frame twice.  It can also select frames by time, not just frame number.
 
 .. _correct-not-fast:
 
