@@ -20,7 +20,8 @@ parser.add_option('--take-times', dest='in_times', type='string',
         help="extract only frames that fall within the given time range, "
         "assuming that the frame rate of the video is 29.97 frames per second."
         "  TIMERANGE should look like 123.4-887, that is, two decimal numbers"
-        " separated by a hyphen.")
+        " separated by a hyphen, specifying the number of seconds from"
+        " the start of the video.")
 
 
 
