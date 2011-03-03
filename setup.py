@@ -1,9 +1,9 @@
 from setuptools import setup
-
+from version import __version__
 
 setup(
         name = 'extractframes',
-        version = '0.10',
+        version = __version__,
         author = 'Thomas Grenfell Smith',
         author_email = 'thomathom@gmail.com',
         description = 'A script to extract frames from a video file using ffmpeg',

@@ -28,14 +28,13 @@ help:
 	@echo "  linkcheck  to check all external links for integrity"
 	@echo "  doctest    to run all doctests embedded in the documentation (if enabled)"
 	@echo ""
+	@echo "  install-to-scratch"
+	@echo "             to install the singlehtml documentation to the scratch drive"
 	@echo "  clean      to remove all stuff from build/"
-	@echo "  bundle     to make a zip-file containing singlehtml"
 
-bundle: singlehtml
-	rm -rf build/extractframes-doc
-	mv build/singlehtml build/extractframes-doc
-	cd build; zip -r extractframes-doc.zip extractframes-doc
-	mv build/extractframes-doc.zip .
+install-to-scratch: singlehtml
+	rm -rf /ein/scratch/tgs/extractframes-doc
+	cp -r build/singlehtml /ein/scratch/tgs/extractframes-doc
 
 clean:
 	-rm -rf $(BUILDDIR)/*
@@ -102,3 +101,9 @@ doctest:
 	$(SPHINXBUILD) -b doctest $(ALLSPHINXOPTS) $(BUILDDIR)/doctest
 	@echo "Testing of doctests in the sources finished, look at the " \
 	      "results in $(BUILDDIR)/doctest/output.txt."
+
+text:
+	$(SPHINXBUILD) -b text $(ALLSPHINXOPTS) $(BUILDDIR)/text
+	@echo
+	@echo "Build finished.  see $(BUILDDIR)/text"
+
