@@ -106,6 +106,11 @@ WHAT='Extract with fractional times AND squish'
 check_results 0 14
 clean_outdir
 
+WHAT='Extract with different starting frame number'
+./extract.py fixtures/100frames.avi "$OUTDIR/$FMT" --take 10-30 --keep-numbers
+check_results 10 30
+clean_outdir
+
 rm -rf $OUTDIR $TMPDIR
 
 

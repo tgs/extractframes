@@ -22,7 +22,12 @@ parser.add_option('--take-times', dest='in_times', type='string',
         "  TIMERANGE should look like 123.4-887, that is, two decimal numbers"
         " separated by a hyphen, specifying the number of seconds from"
         " the start of the video.")
-
+parser.add_option('--keep-numbers', dest='keep_numbers', action='store_true',
+        default=False,
+        help="instead of renumbering the extracted frames to start at 0, "
+        "number them starting with the first frame number that was extracted.  "
+        "So if you say '--take 5-10 --keep-numbers', the output frames will "
+        "be numbered from 5 to 10.")
 
 
 def parse_range(range_str):
@@ -48,9 +53,16 @@ if __name__ == '__main__':
     else:
         bounds_tuple = None
 
+    # set the first frame of output
+    if opts.keep_numbers:
+        out_offset = bounds_tuple[0]
+    else:
+        out_offset = 0
+
+
     if len(args) < 2:
         parser.error("Input file and Output file format are required")
 
     extractframes.extract(*args, in_bounds=bounds_tuple, out_count=opts.out_count,
-            quiet=False)
+            quiet=False, out_offset=out_offset)
 

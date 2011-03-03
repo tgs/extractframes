@@ -17,7 +17,8 @@ way you'd accomplish frame extractions.
 # maybe refactor this part so that the file movement is also testable
 # separately from the extraction?
 
-def extract(infile, outfile, ratio=None, in_bounds=None, quiet=True, out_count=None):
+def extract(infile, outfile, ratio=None, in_bounds=None, quiet=True, 
+        out_count=None, out_offset=0):
     if not os.path.isdir(os.path.dirname(outfile)):
         raise IOError('Destination directory %s does not exist!' % os.path.dirname(outfile))
 
@@ -41,7 +42,7 @@ def extract(infile, outfile, ratio=None, in_bounds=None, quiet=True, out_count=N
         ratio = rateconverter.ratio_for_number(in_count, out_count)
 
     iterator = rateconverter.convert_integers_by_ratio(ratio, in_count,
-            src_offset=in_bounds[0])
+            src_offset=in_bounds[0], dest_offset=out_offset)
     if not quiet:
         pbar = progressbar.ProgressBar(widgets=['Copying frames to destination',
             progressbar.Bar(), progressbar.ETA()])
