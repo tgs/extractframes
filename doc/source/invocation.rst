@@ -65,5 +65,25 @@ Options
    will *first* take the frames that you select, and *then* stretch or
    squish those frames to fill the output requirement.
 
+.. option:: --keep-numbers
+
+   Normally, the output frames are renumbered so that the first frame in the
+   given bounds is frame 0.  :option:`--keep-numbers` overrides this, so that
+   the output frames have the same numbers as the bounds you specified
+   (although this is not any *faster* than normal: [#f1]_).  So if you say
+   :samp:`extract.py --take 10-20 --keep-numbers infile.avi out%d.jpg`, the
+   output files will be :file:`out10.jpg` through :file:`out20.jpg`.
+
+   If you use this option with :option:`--stretch-to`, then the first frame
+   number will be the same as the first number you specify with
+   :option:`--take`, but the last number will be different because there is a
+   different number of frames.
+
+ 
+.. [#f1]
+   Under the hood, there is still renumbering happening, because
+   :program:`ffmpeg` numbers frames starting with 1 but we start them with 0.
+   So, unfortunately, :option:`--keep-numbers` is not any faster than the
+   normal mode.
 
 
