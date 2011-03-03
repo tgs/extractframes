@@ -7,24 +7,24 @@ parser = optparse.OptionParser(usage="%prog infile outfmt [options]")
 
 parser.add_option('--take', dest="in_bounds", type="string",
         metavar="RANGE",
-        help="extract only frames in the given RANGE.  RANGE should look "
+        help="Extract only frames in the given RANGE.  RANGE should look "
         "like 2345-9999, that is, two integers separated by a hyphen.  The "
         "first frame is frame 0.")
 parser.add_option('--stretch-to', '--squish-to', dest='out_count', type='int',
         metavar='NUM', default=None,
-        help="linearly sample from input images to end up with NUM frames of output.  "
+        help="Linearly sample from input images to end up with NUM frames of output.  "
         "For instance, if your video is 50 frames long and you say --stretch-to 75, "
         "every other frame will be duplicated so that you get 1.5 * 50 = 75 frames.")
 parser.add_option('--take-times', dest='in_times', type='string',
         metavar='TIMERANGE',
-        help="extract only frames that fall within the given time range, "
+        help="Extract only frames that fall within the given time range, "
         "assuming that the frame rate of the video is 29.97 frames per second."
         "  TIMERANGE should look like 123.4-887, that is, two decimal numbers"
         " separated by a hyphen, specifying the number of seconds from"
         " the start of the video.")
 parser.add_option('--keep-numbers', dest='keep_numbers', action='store_true',
         default=False,
-        help="instead of renumbering the extracted frames to start at 0, "
+        help="Instead of renumbering the extracted frames to start at 0, "
         "number them starting with the first frame number that was extracted.  "
         "So if you say '--take 5-10 --keep-numbers', the output frames will "
         "be numbered from 5 to 10.")
