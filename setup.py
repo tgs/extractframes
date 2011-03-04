@@ -10,7 +10,7 @@ setup(
         license = 'BSD',
         keywords = 'ffmpeg video frames extract',
         packages = ['extractframes'],
-        scripts = ['extract.py'],
+        scripts = ['extract.py', 'numcp'],
 
         requires = ['progressbar'],
 
