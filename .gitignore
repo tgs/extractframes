@@ -8,3 +8,4 @@ tags
 *,cover
 build
 .*.swp
+.tox
