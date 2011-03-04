@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eu
 
-if [ ! -f './numcp' ]; then
+if [ ! -f './numcp.py' ]; then
 	echo "Run this script from the root of the source distribution"
 	exit 1
 fi
@@ -23,7 +23,7 @@ done
 
 
 WHAT='Running numcp'
-./numcp -s -a 35 "$TMPDIR"/*.txt "$OUTDIR" > /dev/null
+./numcp.py -s -a 35 "$TMPDIR"/*.txt "$OUTDIR" > /dev/null
 
 WHAT='Determining files are in correct place'
 for FILE in "$OUTDIR"/*.txt; do
