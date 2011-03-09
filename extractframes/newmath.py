@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import files
 import tempfile
 import contextlib
 import math
