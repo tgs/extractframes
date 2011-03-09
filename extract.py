@@ -63,6 +63,7 @@ if __name__ == '__main__':
     if len(args) < 2:
         parser.error("Input file and Output file format are required")
 
-    extractframes.extract(*args, in_bounds=bounds_tuple, out_count=opts.out_count,
+    (src, dst) = args;
+    extractframes.extract(src, dst, in_bounds=bounds_tuple, out_count=opts.out_count,
             quiet=False, out_offset=out_offset)
 

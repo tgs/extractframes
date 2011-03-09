@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import math
-import fractions
+#import fractions
+import Rat
 
 def convert_integers_by_ratio(ratio, num_inputs, src_offset=0, dest_offset=0):
     """Given an out:in ratio and a number of inputs, give the reassignments
@@ -26,7 +27,7 @@ def expected_number(ratio, num_inputs):
     return math.floor(ratio * num_inputs)
 
 def ratio_for_number(num_inputs, num_outputs):
-    return fractions.Fraction(num_outputs, num_inputs)
+    return Rat.rat(num_outputs, num_inputs)
 
 def frames_in_range(bounds):
     return bounds[1] + 1 - bounds[0]
