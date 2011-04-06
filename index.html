@@ -1,0 +1,257 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>extractframes v0.13 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.13',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="None" href="#" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="#">extractframes v0.13 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="welcome-to-extractframes-s-documentation">
+<h1>Welcome to extractframes&#8217;s documentation!<a class="headerlink" href="#welcome-to-extractframes-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<span id="document-overview"></span><div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="what-does-it-do">
+<h3>What does it do?<a class="headerlink" href="#what-does-it-do" title="Permalink to this headline">¶</a></h3>
+<p>The <strong class="program">extract.py</strong> script will take an input video and extract all the frames
+from it as JPEG files.  It can give you just a particular range of the
+frames, and it can change the frame rate by <em class="xref std std-ref">Linear Frame Sampling</em>.  So
+for instance, if you want half as many frames as there are in the input, it
+will take every other frame.  If you want twice as many frames, it will take
+every frame twice.  It can also select frames by time, not just frame number.</p>
+</div>
+<div class="section" id="first-make-it-correct-then-make-it-fast">
+<span id="correct-not-fast"></span><h3>First make it correct, then make it fast<a class="headerlink" href="#first-make-it-correct-then-make-it-fast" title="Permalink to this headline">¶</a></h3>
+<p><strong class="program">extract.py</strong> places an emphasis on correctness rather than speed.  It uses
+the <a class="reference external" href="http://www.ffmpeg.org/">ffmpeg</a> program to extract all of the frames in the input video, at
+the original frame rate.  Only then does it select particular frames to
+copy, or change frame rates.  This is because <strong class="command">ffmpeg</strong> is not totally
+reliable when you ask it to change rates.  It is used because of its very
+extensive support for video formats.</p>
+<p>When it extracts frames from video, <strong class="command">ffmpeg</strong> starts numbering
+them from 1.  But for our purposes, it&#8217;s more useful to have them
+numbered from 0.  If this is a problem, it wouldn&#8217;t be too hard to add
+an option to change this.</p>
+</div>
+<div class="section" id="linear-frame-sampling">
+<h3>Linear Frame Sampling<a class="headerlink" href="#linear-frame-sampling" title="Permalink to this headline">¶</a></h3>
+<p><strong class="program">extract.py</strong> doesn&#8217;t ever &#8220;make up&#8221; image data.  All it can do is
+leave out or duplicate frames.  This might lead to problems with e.g. change
+detection.  For example, take a video stream that has been converted from 25
+to 30 frames per second:</p>
+<p class="graphviz">
+<img src="_images/graphviz-1f2bc7839e87e7900725bc6ed983fd15497f398b.png" alt="digraph conversion {
+in0-&gt;out0
+in1-&gt;out1
+in2-&gt;out2
+in3-&gt;out3
+in4-&gt;out4
+in4-&gt;out5
+}" />
+</p>
+<p>The changes between frame <cite>out4</cite> and frame <cite>out5</cite> will always be zero!  So
+that means that, for example, <tt class="samp docutils literal"><span class="pre">cam</span><em><span class="pre">N</span></em><span class="pre">_dyn_obj</span><em><span class="pre">M</span></em></tt> will have a spurious
+zero, one time out of every 6 samples.</p>
+<p>I&#8217;m not sure about the right way to deal with this.</p>
+</div>
+</div>
+<span id="document-invocation"></span><div class="section" id="using-extractframes">
+<h2>Using extractframes<a class="headerlink" href="#using-extractframes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="running-extract-py">
+<h3>Running <cite>extract.py</cite><a class="headerlink" href="#running-extract-py" title="Permalink to this headline">¶</a></h3>
+<p>The <strong class="program">extract.py</strong> script extracts frames from a video in a
+controllable way.  It is called like this:</p>
+<blockquote>
+<tt class="samp docutils literal"><span class="pre">extract.py</span> <span class="pre">[options]</span> <em><span class="pre">input_movie</span></em> <em><span class="pre">output_format</span></em></tt></blockquote>
+<dl class="docutils">
+<dt>input_movie</dt>
+<dd>Some movie file in a format that <strong class="command">ffmpeg</strong> understands.
+Windows <cite>.avi</cite> files and Apple <cite>.mov</cite> files should work fine, among
+many others.</dd>
+<dt>output_format</dt>
+<dd>A pattern for producing output files.  For example, if you want
+your files to look like <tt class="file docutils literal"><span class="pre">img_99.jpg</span></tt> and be in the
+<tt class="file docutils literal"><span class="pre">output</span></tt> directory, then you could say
+<tt class="file docutils literal"><span class="pre">output/img_%5d.jpg</span></tt>.  The <tt class="file docutils literal"><span class="pre">%05d</span></tt> in the format is what turns
+the number 99 into the string <tt class="file docutils literal"><span class="pre">99</span></tt> that becomes part of the
+filename.  Here are some examples when formatting the number 99:</dd>
+</dl>
+<table border="1" class="docutils">
+<caption>Formatting examples</caption>
+<colgroup>
+<col width="17%" />
+<col width="17%" />
+<col width="67%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Format</th>
+<th class="head">Result</th>
+<th class="head">Comment</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td><tt class="file docutils literal"><span class="pre">img_%d.jpg</span></tt></td>
+<td><tt class="file docutils literal"><span class="pre">img_99.jpg</span></tt></td>
+<td>Commonly used in our projects.</td>
+</tr>
+<tr><td><tt class="file docutils literal"><span class="pre">img_%05d.jpg</span></tt></td>
+<td><tt class="file docutils literal"><span class="pre">img_00099.jpg</span></tt></td>
+<td>Adds zeros until exactly 5 digits long&#8212;Usually sorts in a better way than above.</td>
+</tr>
+<tr><td><tt class="file docutils literal"><span class="pre">img_%5d.jpg</span></tt></td>
+<td><tt class="file docutils literal"><span class="pre">img_</span>&nbsp;&nbsp; <span class="pre">99.jpg</span></tt></td>
+<td>Adds spaces till 5 characters long&#8212;usually not what you want.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="options">
+<h3>Options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h3>
+<dl class="option">
+<dt id="cmdoption--take">
+<tt class="descname">--take</tt><tt class="descclassname"> &lt;BEGIN-END&gt;</tt><a class="headerlink" href="#cmdoption--take" title="Permalink to this definition">¶</a></dt>
+<dd><p>After extracting all the frames from the input, which are numbered
+starting with 0, take only the frames from BEGIN to END inclusive.  They
+are renumbered to start with 0 in the output directory, so if you said
+<tt class="samp docutils literal"><span class="pre">extract.py</span> <span class="pre">--take</span> <span class="pre">10-20</span> <span class="pre">infile.avi</span> <span class="pre">out%d.jpg</span></tt>, then you would get
+<tt class="file docutils literal"><span class="pre">out0.jpg</span></tt> through <tt class="file docutils literal"><span class="pre">out10.jpg</span></tt> (eleven frames).  This is not
+particularly efficient, see <a class="reference internal" href="index.html#correct-not-fast"><em>this discussion</em></a>.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption--take-times">
+<tt class="descname">--take-times</tt><tt class="descclassname"> &lt;BEGIN-END&gt;</tt><a class="headerlink" href="#cmdoption--take-times" title="Permalink to this definition">¶</a></dt>
+<dd><p>After extracting all the frames from the input, take only the frames
+that fall between BEGIN and END seconds from the start of the video.
+The video is assumed to be at 29.97 frames per second for this
+calculation.  For example, if you said <tt class="samp docutils literal"><span class="pre">extract.py</span> <span class="pre">--take-times</span>
+<span class="pre">0-15.5</span> <span class="pre">infile.avi</span> <span class="pre">out%d.jpg</span></tt>, then you would get <tt class="file docutils literal"><span class="pre">out0.jpg</span></tt>
+through <tt class="file docutils literal"><span class="pre">out464.jpg</span></tt> (465 frames).  If you&#8217;re counting frames,
+you should know that the American standard frame rate is actually not
+29.97 but <img class="math" src="_images/math/eb0b5d6aff9742abbbbd210e120f3872773c1f94.png" alt="30 * \frac{1000}{1001} \approx 29.970029970"/> frames per
+second.  This is only important if you have many thousands of
+frames.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption--stretch-to">
+<tt class="descname">--stretch-to</tt><tt class="descclassname"> &lt;FRAMES&gt;</tt><tt class="descclassname">, </tt><tt class="descname">--squish-to</tt><tt class="descclassname"> &lt;FRAMES&gt;</tt><a class="headerlink" href="#cmdoption--stretch-to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change how many frames there will be in the output, by stretching or
+squishing time&#8212;that is, by changing the frame rate.  If your input
+has 100 frames and you say <cite>&#8211;stretch-to 200</cite>, then the output will
+have two copies of each frame.  This option is applied <em>after</em>
+<a class="reference internal" href="index.html#cmdoption--take"><em class="xref std std-option">--take</em></a> or <a class="reference internal" href="index.html#cmdoption--take-times"><em class="xref std std-option">--take-times</em></a>, so <strong class="program">extract.py</strong>
+will <em>first</em> take the frames that you select, and <em>then</em> stretch or
+squish those frames to fill the output requirement.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption--keep-numbers">
+<tt class="descname">--keep-numbers</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption--keep-numbers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normally, the output frames are renumbered so that the first frame in the
+given bounds is frame 0.  <a class="reference internal" href="index.html#cmdoption--keep-numbers"><em class="xref std std-option">--keep-numbers</em></a> overrides this, so that
+the output frames have the same numbers as the bounds you specified
+(although this is not any <em>faster</em> than normal: <a class="footnote-reference" href="#f1" id="id1">[1]</a>).  So if you say
+<tt class="samp docutils literal"><span class="pre">extract.py</span> <span class="pre">--take</span> <span class="pre">10-20</span> <span class="pre">--keep-numbers</span> <span class="pre">infile.avi</span> <span class="pre">out%d.jpg</span></tt>, the
+output files will be <tt class="file docutils literal"><span class="pre">out10.jpg</span></tt> through <tt class="file docutils literal"><span class="pre">out20.jpg</span></tt>.</p>
+<p>If you use this option with <a class="reference internal" href="index.html#cmdoption--stretch-to"><em class="xref std std-option">--stretch-to</em></a>, then the first frame
+number will be the same as the first number you specify with
+<a class="reference internal" href="index.html#cmdoption--take"><em class="xref std std-option">--take</em></a>, but the last number will be different because there is a
+different number of frames.</p>
+</dd></dl>
+
+<table class="docutils footnote" frame="void" id="f1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Under the hood, there is still renumbering happening, because
+<strong class="program">ffmpeg</strong> numbers frames starting with 1 but we start them with 0.
+So, unfortunately, <a class="reference internal" href="index.html#cmdoption--keep-numbers"><em class="xref std std-option">--keep-numbers</em></a> is not any faster than the
+normal mode.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html#document-overview">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="index.html#what-does-it-do">What does it do?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#first-make-it-correct-then-make-it-fast">First make it correct, then make it fast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#linear-frame-sampling">Linear Frame Sampling</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#document-invocation">Using extractframes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="index.html#running-extract-py">Running <cite>extract.py</cite></a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#options">Options</a></li>
+</ul>
+</li>
+</ul>
+
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li><a href="#">extractframes v0.13 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2011, Thomas Grenfell Smith.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.5.
+    </div>
+  </body>
+</html>
