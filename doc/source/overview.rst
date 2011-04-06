@@ -25,6 +25,11 @@ extensive support for video formats.
 
 .. _ffmpeg: http://www.ffmpeg.org/
 
+When it extracts frames from video, :command:`ffmpeg` starts numbering
+them from 1.  But for our purposes, it's more useful to have them
+numbered from 0.  If this is a problem, it wouldn't be too hard to add
+an option to change this.
+
 Linear Frame Sampling
 ---------------------
 
@@ -33,14 +38,26 @@ leave out or duplicate frames.  This might lead to problems with e.g. change
 detection.  For example, take a video stream that has been converted from 25
 to 30 frames per second:
 
-.. digraph:: conversion
+.. only:: html or latex
 
-   in0->out0
-   in1->out1
-   in2->out2
-   in3->out3
-   in4->out4
-   in4->out5
+        .. digraph:: conversion
+
+           in0->out0
+           in1->out1
+           in2->out2
+           in3->out3
+           in4->out4
+           in4->out5
+
+.. only:: text
+
+           in0->out0
+           in1->out1
+           in2->out2
+           in3->out3
+           in4->out4
+           in4->out5
+        
 
 The changes between frame `out4` and frame `out5` will always be zero!  So
 that means that, for example, :samp:`cam{N}_dyn_obj{M}` will have a spurious
