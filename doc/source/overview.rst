@@ -1,6 +1,8 @@
 Overview
 ========
 
+.. _overview:
+
 What does it do?
 ----------------
 

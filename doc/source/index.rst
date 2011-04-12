@@ -10,6 +10,7 @@ Welcome to extractframes's documentation!
    :maxdepth: 2
 
    overview
+   getting
    invocation
 
 
