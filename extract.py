@@ -44,14 +44,12 @@ if __name__ == '__main__':
     if opts.in_bounds and opts.in_times:
         parser.error("Options --take and --take-times are mutually exclusive")
     elif opts.in_bounds:
-        raw_range = parse_range(opts.in_bounds)
-        bounds_tuple = tuple(int(x) for x in raw_range)
-        if any(t[0] != t[1] for t in zip(raw_range, bounds_tuple)):
-            parser.error("Frame numbers must be integers")
+        frames = multirange(opts.in_bounds)
     elif opts.in_times:
-        bounds_tuple = tuple(time_to_frame(t) for t in parse_range(opts.in_times))
+        parse = lambda x: time_to_frame(float(x))
+        frames = multirange(opts.in_bounds, parse=parse)
     else:
-        bounds_tuple = None
+        frames = None
 
     # set the first frame of output
     if opts.keep_numbers:

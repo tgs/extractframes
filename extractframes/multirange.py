@@ -7,6 +7,7 @@ class multirange(object):
         
         sections = range_str.split(',')
         self.ranges = []
+        self.expanded = None
         last_end = float('-inf')
         for section in sections:
             parts = [parser(x) for x in section.split('-')]
@@ -23,6 +24,19 @@ class multirange(object):
 
     def __iter__(self):
         return itertools.chain(*self.ranges)
+
+    def _ensure_expanded(self):
+        if self.expanded == None:
+            self.expanded = list(iter(self))
+
+    def __getitem__(self, idx):
+        self._ensure_expanded()
+        return self.expanded[idx]
+    def __len__(self):
+        self._ensure_expanded()
+        return len(self.expanded)
+
+            
 
 
 

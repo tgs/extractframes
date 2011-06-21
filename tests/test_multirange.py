@@ -33,4 +33,8 @@ def testFloatParse():
     conv = lambda x: time_to_frame(float(x))
     assert_equal(range(0,15), list(multirange(s, parser=conv)))
 
+def testIndexing():
+    s = '0-10'
+    x = multirange(s)
+    x[0]
 
