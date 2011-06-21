@@ -10,3 +10,8 @@ build
 .*.swp
 .tox
 nosetests.xml
+.installed.cfg
+bin
+develop-eggs
+eggs
+*.egg
