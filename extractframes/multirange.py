@@ -4,6 +4,8 @@ import itertools
 class multirange(object):
     def __init__(self, range_str, parser=int):
         """Take string like '1-10,12-40', and return the indicated integers"""
+
+        self.range_str = range_str
         
         sections = range_str.split(',')
         self.ranges = []
@@ -32,11 +34,17 @@ class multirange(object):
     def __getitem__(self, idx):
         self._ensure_expanded()
         return self.expanded[idx]
+
     def __len__(self):
         self._ensure_expanded()
         return len(self.expanded)
 
-            
+    def __str__(self):
+        return self.range_str
+
+    def __repr__(self):
+        return "multirange(%s)" % str(self)
+
 
 
 

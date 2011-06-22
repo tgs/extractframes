@@ -2,6 +2,7 @@
 import optparse
 import extractframes
 from extractframes.timespec import time_to_frame
+from extractframes.multirange import multirange
 
 parser = optparse.OptionParser(usage="%prog infile outfmt [options]")
 
@@ -47,13 +48,13 @@ if __name__ == '__main__':
         frames = multirange(opts.in_bounds)
     elif opts.in_times:
         parse = lambda x: time_to_frame(float(x))
-        frames = multirange(opts.in_bounds, parse=parse)
+        frames = multirange(opts.in_times, parser=parse)
     else:
         frames = None
 
     # set the first frame of output
     if opts.keep_numbers:
-        out_offset = bounds_tuple[0]
+        out_offset = frames[0]
     else:
         out_offset = 0
 
@@ -62,7 +63,7 @@ if __name__ == '__main__':
         parser.error("Input file and Output file format are required")
 
     (src, dst) = args;
-    extractframes.extract(src, dst, in_bounds=bounds_tuple, out_count=opts.out_count,
+    extractframes.extract(src, dst, in_frames=frames, out_count=opts.out_count,
             quiet=False, out_offset=out_offset)
 
 

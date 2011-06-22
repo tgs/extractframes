@@ -17,7 +17,7 @@ way you'd accomplish frame extractions.
 # maybe refactor this part so that the file movement is also testable
 # separately from the extraction?
 
-def extract(infile, outfile, ratio=None, in_bounds=None, quiet=True, 
+def extract(infile, outfile, ratio=None, in_frames=None, quiet=True, 
         out_count=None, out_offset=0):
     if not os.path.isdir(os.path.dirname(outfile)):
         raise IOError('Destination directory %s does not exist!' % os.path.dirname(outfile))
@@ -29,20 +29,22 @@ def extract(infile, outfile, ratio=None, in_bounds=None, quiet=True,
 
     frame_source = VideoFrameSource(infile, quiet=quiet)
 
-    if not in_bounds:
-        in_bounds = (0, frame_source.get_num_frames() - 1)
+    if not in_frames:
+        # xrange is half-open interval.  For closed interval, would be
+        # [0, get_num_frames() - 1]
+        in_frames = xrange(0, frame_source.get_num_frames())
 
-    if in_bounds[0] < 0 or in_bounds[1] > frame_source.get_num_frames() - 1:
+    if in_frames[0] < 0 or in_frames[-1] > frame_source.get_num_frames() - 1:
         raise ValueError("Requested bounds %s don't fit in %d-frame video file"
-                % (in_bounds, frame_source.get_num_frames()))
+                % (in_frames, frame_source.get_num_frames()))
 
-    in_count = in_bounds[1] - in_bounds[0] + 1
+    in_count = in_frames[-1] - in_frames[0] + 1
 
     if out_count is not None:
         ratio = rateconverter.ratio_for_number(in_count, out_count)
 
-    iterator = rateconverter.convert_integers_by_ratio(ratio, in_count,
-            src_offset=in_bounds[0], dest_offset=out_offset)
+    iterator = rateconverter.convert_integers_by_iterator_ratio(ratio, in_frames,
+            dest_offset=out_offset)
     if not quiet:
         pbar = progressbar.ProgressBar(widgets=['Copying frames to destination',
             progressbar.Bar(), progressbar.ETA()])
@@ -52,9 +54,6 @@ def extract(infile, outfile, ratio=None, in_bounds=None, quiet=True,
         dest = outfile % dst
 
         shutil.copy(source, dest)
-
-
-
 
 
 

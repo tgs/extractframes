@@ -38,3 +38,7 @@ def testIndexing():
     x = multirange(s)
     x[0]
 
+def testStr():
+    s = '0-2,20-25,30-31'
+    assert_equal(s, str(multirange(s)))
+

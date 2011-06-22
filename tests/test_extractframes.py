@@ -69,18 +69,18 @@ def do_extract_check(in_file, out_dir, ratio):
 
 class TestExtractByRange(OneHundredFrameSetUp):
     def test_twenty(self):
-        extract(self.in_file, self.out_fmt, in_bounds=(10, 29))
+        extract(self.in_file, self.out_fmt, in_frames=xrange(10, 30))
         file_list = sorted(os.listdir(self.out_dir))
         assert_equal(len(file_list), 20)
 
     @raises(ValueError)
     def test_range_past_end(self):
         # should raise exception because the last frame is #99
-        extract(self.in_file, self.out_fmt, in_bounds=(0, 100))
+        extract(self.in_file, self.out_fmt, in_frames=xrange(0, 101))
 
     @raises(ValueError)
     def test_range_past_beginning(self):
-        extract(self.in_file, self.out_fmt, in_bounds=(-1, 20))
+        extract(self.in_file, self.out_fmt, in_frames=xrange(-1, 21))
 
 class TestExtractByRangeToNum(OneHundredFrameSetUp):
     @raises(ValueError)
