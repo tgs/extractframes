@@ -111,6 +111,14 @@ WHAT='Extract with keep-numbers'
 check_results 10 30
 clean_outdir
 
+WHAT='Extract with gaps'
+./extract.py fixtures/100frames.avi "$OUTDIR/$FMT" --take 10-20,30-40
+test `ls $OUTDIR/ | wc -l` -eq 22
+for F in `seq 0 10; seq 20 30`; do
+	test -f `printf "$OUTDIR/$FMT" $F`
+done
+clean_outdir
+
 WHAT='Extract with keep-numbers AND stretch'
 ./extract.py fixtures/100frames.avi "$OUTDIR/$FMT" --take 10-30 --keep-numbers --stretch-to 41
 check_results 10 50
