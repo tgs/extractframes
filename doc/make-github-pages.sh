@@ -2,6 +2,7 @@
 
 
 set -euv
+make singlehtml
 
 rm -rf build/gh-pages
 git clone git@github.com:tgs/extractframes.git build/gh-pages
