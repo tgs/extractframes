@@ -4,23 +4,26 @@ import extractframes
 from extractframes.timespec import time_to_frame
 from extractframes.multirange import multirange
 
-parser = optparse.OptionParser(usage="%prog infile outfmt [options]")
+parser = optparse.OptionParser(usage="""%prog infile outfmt [options]
+
+For more documentation, see http://tgs.github.com/extractframes/""")
 
 parser.add_option('--take', dest="in_bounds", type="string",
-        metavar="RANGE",
-        help="Extract only frames in the given RANGE.  RANGE should look "
-        "like 2345-9999, that is, two integers separated by a hyphen.  The "
-        "first frame is frame 0.")
+        metavar="RANGES",
+        help="Extract only frames in the given RANGE.  RANGES should look "
+        "like '1-10,500-777,2345-9999', that is, comma-separated groups of two "
+        "integers separated by a hyphen.  The first frame is frame 0.")
 parser.add_option('--stretch-to', '--squish-to', dest='out_count', type='int',
         metavar='NUM', default=None,
         help="Linearly sample from input images to end up with NUM frames of output.  "
         "For instance, if your video is 50 frames long and you say --stretch-to 75, "
         "every other frame will be duplicated so that you get 1.5 * 50 = 75 frames.")
 parser.add_option('--take-times', dest='in_times', type='string',
-        metavar='TIMERANGE',
+        metavar='TIMERANGES',
         help="Extract only frames that fall within the given time range, "
         "assuming that the frame rate of the video is 29.97 frames per second."
-        "  TIMERANGE should look like 123.4-887, that is, two decimal numbers"
+        "  TIMERANGES should look like '123.4-887,900-1000.4', that is, "
+        "comma-separated groups of two decimal numbers"
         " separated by a hyphen, specifying the number of seconds from"
         " the start of the video.")
 parser.add_option('--keep-numbers', dest='keep_numbers', action='store_true',
