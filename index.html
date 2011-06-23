@@ -7,13 +7,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>extractframes v0.13 documentation</title>
+    <title>extractframes v0.14 documentation</title>
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.13',
+        VERSION:     '0.14',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -28,7 +28,7 @@
     <div class="related">
       <h3>Navigation</h3>
       <ul>
-        <li><a href="#">extractframes v0.13 documentation</a> &raquo;</li> 
+        <li><a href="#">extractframes v0.14 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -86,6 +86,17 @@ zero, one time out of every 6 samples.</p>
 <p>I&#8217;m not sure about the right way to deal with this.</p>
 </div>
 </div>
+<span id="document-getting"></span><div class="section" id="getting-extractframes">
+<h2>Getting extractframes<a class="headerlink" href="#getting-extractframes" title="Permalink to this headline">¶</a></h2>
+<p>This documentation is for extractframes version 0.14.</p>
+<p>You can always get the latest released version at
+<a class="reference external" href="https://einstein.psych.indiana.edu/downloads/python/">https://einstein.psych.indiana.edu/downloads/python/</a></p>
+<p>Download the latest .zip file for extractframes, and then either run
+<tt class="docutils literal"><span class="pre">easy_install</span> <span class="pre">extractframes-a.b.zip</span></tt> or extract it and run <tt class="docutils literal"><span class="pre">python</span>
+<span class="pre">setup.py</span> <span class="pre">install</span></tt>.  If either of those don&#8217;t work, there&#8217;s probably
+some problem with your Python installation.</p>
+<p><tt class="docutils literal"><span class="pre">extractframes</span></tt> is tested with Python versions 2.5 and 2.6.</p>
+</div>
 <span id="document-invocation"></span><div class="section" id="using-extractframes">
 <h2>Using extractframes<a class="headerlink" href="#using-extractframes" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="running-extract-py">
@@ -140,18 +151,32 @@ filename.  Here are some examples when formatting the number 99:</dd>
 <h3>Options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h3>
 <dl class="option">
 <dt id="cmdoption--take">
-<tt class="descname">--take</tt><tt class="descclassname"> &lt;BEGIN-END&gt;</tt><a class="headerlink" href="#cmdoption--take" title="Permalink to this definition">¶</a></dt>
-<dd><p>After extracting all the frames from the input, which are numbered
-starting with 0, take only the frames from BEGIN to END inclusive.  They
-are renumbered to start with 0 in the output directory, so if you said
+<tt class="descname">--take</tt><tt class="descclassname"> &lt;BEGIN-END&gt;[,&lt;BEGIN-END&gt;,...]</tt><a class="headerlink" href="#cmdoption--take" title="Permalink to this definition">¶</a></dt>
+<dd><p>After extracting all the frames from the input, which are numbered starting
+with 0, take only the frames from BEGIN to END inclusive.  They are
+renumbered to start with 0 in the output directory, so if you said
 <tt class="samp docutils literal"><span class="pre">extract.py</span> <span class="pre">--take</span> <span class="pre">10-20</span> <span class="pre">infile.avi</span> <span class="pre">out%d.jpg</span></tt>, then you would get
 <tt class="file docutils literal"><span class="pre">out0.jpg</span></tt> through <tt class="file docutils literal"><span class="pre">out10.jpg</span></tt> (eleven frames).  This is not
 particularly efficient, see <a class="reference internal" href="index.html#correct-not-fast"><em>this discussion</em></a>.</p>
+<p>If you specify multiple ranges of frames, separated with commas, then they
+will all be extracted.  If you extract multiple ranges of frames, the first
+frame of the first range is renumbered to be 0, but the intervals between
+ranges are preserved.  For instance, if you say <tt class="samp docutils literal"><span class="pre">extract.py</span> <span class="pre">--take</span>
+<span class="pre">10-20,30-40</span> <span class="pre">infile.avi</span> <span class="pre">img_%d.jpg</span></tt>, then you would get <tt class="file docutils literal"><span class="pre">img_0.jpg</span></tt>
+through <tt class="file docutils literal"><span class="pre">img_10.jpg</span></tt>, then a gap, and then <tt class="file docutils literal"><span class="pre">img_20.jpg</span></tt> through
+<tt class="file docutils literal"><span class="pre">img_30.jpg</span></tt>.  Why 20?  Because 30 (the start of the second range)
+minus 10 (the start of the first range) is 20.</p>
+<p>To specify a range that is only one frame long, use the same number twice.
+E.g. getting just frame 8, say <tt class="samp docutils literal"><span class="pre">--take</span> <span class="pre">8-8</span></tt>.  But note that, if you
+use <em class="xref std std-option">--squish-to</em>, such a short frame range may get entirely left
+out of the output.</p>
+<p>If you use multiple ranges, then they must not overlap, and they must be
+listed in increasing order.</p>
 </dd></dl>
 
 <dl class="option">
 <dt id="cmdoption--take-times">
-<tt class="descname">--take-times</tt><tt class="descclassname"> &lt;BEGIN-END&gt;</tt><a class="headerlink" href="#cmdoption--take-times" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">--take-times</tt><tt class="descclassname"> &lt;BEGIN-END&gt;[,&lt;BEGIN-END&gt;,...]</tt><a class="headerlink" href="#cmdoption--take-times" title="Permalink to this definition">¶</a></dt>
 <dd><p>After extracting all the frames from the input, take only the frames
 that fall between BEGIN and END seconds from the start of the video.
 The video is assumed to be at 29.97 frames per second for this
@@ -174,6 +199,10 @@ have two copies of each frame.  This option is applied <em>after</em>
 <a class="reference internal" href="index.html#cmdoption--take"><em class="xref std std-option">--take</em></a> or <a class="reference internal" href="index.html#cmdoption--take-times"><em class="xref std std-option">--take-times</em></a>, so <strong class="program">extract.py</strong>
 will <em>first</em> take the frames that you select, and <em>then</em> stretch or
 squish those frames to fill the output requirement.</p>
+<p>If you use multiple frame ranges in <a class="reference internal" href="index.html#cmdoption--take"><em class="xref std std-option">--take</em></a> or
+<a class="reference internal" href="index.html#cmdoption--take-times"><em class="xref std std-option">--take-times</em></a>, then these options will stretch or squish the outer
+bounds of the whole range.  For example, <tt class="samp docutils literal"><span class="pre">--take</span> <span class="pre">0-9,20-29</span> <span class="pre">--squish-to</span>
+<span class="pre">10</span></tt> will get you frames 0-2 and 6-9.</p>
 </dd></dl>
 
 <dl class="option">
@@ -189,6 +218,8 @@ output files will be <tt class="file docutils literal"><span class="pre">out10.j
 number will be the same as the first number you specify with
 <a class="reference internal" href="index.html#cmdoption--take"><em class="xref std std-option">--take</em></a>, but the last number will be different because there is a
 different number of frames.</p>
+<p>If you use this with multiple frame ranges, it only aligns the start of the
+<em>first</em> frame range.</p>
 </dd></dl>
 
 <table class="docutils footnote" frame="void" id="f1" rules="none">
@@ -219,6 +250,7 @@ normal mode.</td></tr>
 <li class="toctree-l2"><a class="reference internal" href="index.html#linear-frame-sampling">Linear Frame Sampling</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#document-getting">Getting extractframes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="index.html#document-invocation">Using extractframes</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="index.html#running-extract-py">Running <cite>extract.py</cite></a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.html#options">Options</a></li>
@@ -246,7 +278,7 @@ normal mode.</td></tr>
     <div class="related">
       <h3>Navigation</h3>
       <ul>
-        <li><a href="#">extractframes v0.13 documentation</a> &raquo;</li> 
+        <li><a href="#">extractframes v0.14 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
