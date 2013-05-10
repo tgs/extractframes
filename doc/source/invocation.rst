@@ -61,15 +61,15 @@ Options
  
 .. option:: --take-times <BEGIN-END>[,<BEGIN-END>,...]
    
-   After extracting all the frames from the input, take only the frames
-   that fall between BEGIN and END seconds from the start of the video.
-   The video is assumed to be at 29.97 frames per second for this
-   calculation.  For example, if you said :samp:`extract.py --take-times
-   0-15.5 infile.avi out%d.jpg`, then you would get :file:`out0.jpg`
-   through :file:`out464.jpg` (465 frames).  If you're counting frames,
-   you should know that the American standard frame rate is actually not
-   29.97 but :math:`30 * \frac{1000}{1001} \approx 29.970029970` frames per
-   second.  This is only important if you have many thousands of
+   After extracting all the frames from the input, take only the frames that
+   fall between BEGIN and END seconds from the start of the video.  The video
+   is assumed to be at the American standard of approximately 29.97 frames per
+   second for this calculation.  For example, if you said :samp:`extract.py
+   --take-times 0-15.5 infile.avi out%d.jpg`, then you would get
+   :file:`out0.jpg` through :file:`out464.jpg` (465 frames).  If you're
+   counting frames, you should know that the American standard frame rate is
+   actually not 29.97 but :math:`30 * \frac{1000}{1001} \approx 29.970029970`
+   frames per second.  This is only important if you have many thousands of
    frames.
 
 .. option:: --stretch-to <FRAMES>, --squish-to <FRAMES>
