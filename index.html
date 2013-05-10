@@ -3,13 +3,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>extractframes v0.15 documentation</title>
+    <title>extractframes 0.15 documentation</title>
+    
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
@@ -22,13 +25,13 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="None" href="#" /> 
+    <link rel="top" title="None" href="index.html#document-index" /> 
   </head>
   <body>
     <div class="related">
       <h3>Navigation</h3>
       <ul>
-        <li><a href="#">extractframes v0.15 documentation</a> &raquo;</li> 
+        <li><a href="index.html#document-index">extractframes 0.15 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -71,7 +74,7 @@ leave out or duplicate frames.  This might lead to problems with e.g. change
 detection.  For example, take a video stream that has been converted from 25
 to 30 frames per second:</p>
 <p class="graphviz">
-<img src="_images/graphviz-1f2bc7839e87e7900725bc6ed983fd15497f398b.png" alt="digraph conversion {
+<img src="_images/graphviz-5998bf679c157d64e3bc93af2d279eb7664ae988.png" alt="digraph conversion {
 in0-&gt;out0
 in1-&gt;out1
 in2-&gt;out2
@@ -89,13 +92,14 @@ zero, one time out of every 6 samples.</p>
 <span id="document-getting"></span><div class="section" id="getting-extractframes">
 <h2>Getting extractframes<a class="headerlink" href="#getting-extractframes" title="Permalink to this headline">¶</a></h2>
 <p>This documentation is for extractframes version 0.15.</p>
-<p>You can always get the latest version from GitHub at
-<a class="reference external" href="https://github.com/tgs/extractframes">https://github.com/tgs/extractframes</a> &#8212; click the Downloads button to get a
-released version.</p>
-<p>Download the latest .zip file, and then run
-<tt class="docutils literal"><span class="pre">easy_install</span> <span class="pre">extractframes-a.b.zip</span></tt></p>
-<p>The latest documentation should always be available at
-<a class="reference external" href="http://tgs.github.com/extractframes/">http://tgs.github.com/extractframes/</a></p>
+<p>The latest documentation should always be available at <a class="reference external" href="http://tgs.github.com/extractframes/">http://tgs.github.com/extractframes/</a></p>
+<p>You can always get the latest released version at
+<a class="reference external" href="https://einstein.psych.indiana.edu/downloads/python/">https://einstein.psych.indiana.edu/downloads/python/</a> (if you work in our lab at IU), or from
+GitHub at <a class="reference external" href="https://github.com/tgs/extractframes">https://github.com/tgs/extractframes</a></p>
+<p>Download the latest .zip file for extractframes, and then either run
+<tt class="docutils literal"><span class="pre">easy_install</span> <span class="pre">extractframes-a.b.zip</span></tt> or extract it and run <tt class="docutils literal"><span class="pre">python</span>
+<span class="pre">setup.py</span> <span class="pre">install</span></tt>.  If either of those don&#8217;t work, there&#8217;s probably
+some problem with your Python installation.</p>
 <p><tt class="docutils literal"><span class="pre">extractframes</span></tt> is tested with Python versions 2.5 through 2.7</p>
 </div>
 <span id="document-invocation"></span><div class="section" id="using-extractframes">
@@ -105,7 +109,7 @@ released version.</p>
 <p>The <strong class="program">extract.py</strong> script extracts frames from a video in a
 controllable way.  It is called like this:</p>
 <blockquote>
-<tt class="samp docutils literal"><span class="pre">extract.py</span> <span class="pre">[options]</span> <em><span class="pre">input_movie</span></em> <em><span class="pre">output_format</span></em></tt></blockquote>
+<div><tt class="samp docutils literal"><span class="pre">extract.py</span> <span class="pre">[options]</span> <em><span class="pre">input_movie</span></em> <em><span class="pre">output_format</span></em></tt></div></blockquote>
 <dl class="docutils">
 <dt>input_movie</dt>
 <dd>Some movie file in a format that <strong class="command">ffmpeg</strong> understands.
@@ -127,21 +131,21 @@ filename.  Here are some examples when formatting the number 99:</dd>
 <col width="67%" />
 </colgroup>
 <thead valign="bottom">
-<tr><th class="head">Format</th>
+<tr class="row-odd"><th class="head">Format</th>
 <th class="head">Result</th>
 <th class="head">Comment</th>
 </tr>
 </thead>
 <tbody valign="top">
-<tr><td><tt class="file docutils literal"><span class="pre">img_%d.jpg</span></tt></td>
+<tr class="row-even"><td><tt class="file docutils literal"><span class="pre">img_%d.jpg</span></tt></td>
 <td><tt class="file docutils literal"><span class="pre">img_99.jpg</span></tt></td>
 <td>Commonly used in our projects.</td>
 </tr>
-<tr><td><tt class="file docutils literal"><span class="pre">img_%05d.jpg</span></tt></td>
+<tr class="row-odd"><td><tt class="file docutils literal"><span class="pre">img_%05d.jpg</span></tt></td>
 <td><tt class="file docutils literal"><span class="pre">img_00099.jpg</span></tt></td>
 <td>Adds zeros until exactly 5 digits long&#8212;Usually sorts in a better way than above.</td>
 </tr>
-<tr><td><tt class="file docutils literal"><span class="pre">img_%5d.jpg</span></tt></td>
+<tr class="row-even"><td><tt class="file docutils literal"><span class="pre">img_%5d.jpg</span></tt></td>
 <td><tt class="file docutils literal"><span class="pre">img_</span>&nbsp;&nbsp; <span class="pre">99.jpg</span></tt></td>
 <td>Adds spaces till 5 characters long&#8212;usually not what you want.</td>
 </tr>
@@ -178,15 +182,15 @@ listed in increasing order.</p>
 <dl class="option">
 <dt id="cmdoption--take-times">
 <tt class="descname">--take-times</tt><tt class="descclassname"> &lt;BEGIN-END&gt;[,&lt;BEGIN-END&gt;,...]</tt><a class="headerlink" href="#cmdoption--take-times" title="Permalink to this definition">¶</a></dt>
-<dd><p>After extracting all the frames from the input, take only the frames
-that fall between BEGIN and END seconds from the start of the video.
-The video is assumed to be at 29.97 frames per second for this
-calculation.  For example, if you said <tt class="samp docutils literal"><span class="pre">extract.py</span> <span class="pre">--take-times</span>
-<span class="pre">0-15.5</span> <span class="pre">infile.avi</span> <span class="pre">out%d.jpg</span></tt>, then you would get <tt class="file docutils literal"><span class="pre">out0.jpg</span></tt>
-through <tt class="file docutils literal"><span class="pre">out464.jpg</span></tt> (465 frames).  If you&#8217;re counting frames,
-you should know that the American standard frame rate is actually not
-29.97 but <img class="math" src="_images/math/eb0b5d6aff9742abbbbd210e120f3872773c1f94.png" alt="30 * \frac{1000}{1001} \approx 29.970029970"/> frames per
-second.  This is only important if you have many thousands of
+<dd><p>After extracting all the frames from the input, take only the frames that
+fall between BEGIN and END seconds from the start of the video.  The video
+is assumed to be at the American standard of approximately 29.97 frames per
+second for this calculation.  For example, if you said <tt class="samp docutils literal"><span class="pre">extract.py</span>
+<span class="pre">--take-times</span> <span class="pre">0-15.5</span> <span class="pre">infile.avi</span> <span class="pre">out%d.jpg</span></tt>, then you would get
+<tt class="file docutils literal"><span class="pre">out0.jpg</span></tt> through <tt class="file docutils literal"><span class="pre">out464.jpg</span></tt> (465 frames).  If you&#8217;re
+counting frames, you should know that the American standard frame rate is
+actually not 29.97 but <span class="math">30 * \frac{1000}{1001} \approx 29.970029970</span>
+frames per second.  This is only important if you have many thousands of
 frames.</p>
 </dd></dl>
 
@@ -243,7 +247,7 @@ normal mode.</td></tr>
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="#">Table Of Contents</a></h3>
+  <h3><a href="index.html#document-index">Table Of Contents</a></h3>
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="index.html#document-overview">Overview</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="index.html#what-does-it-do">What does it do?</a></li>
@@ -262,7 +266,7 @@ normal mode.</td></tr>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" size="18" />
+      <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
@@ -279,12 +283,12 @@ normal mode.</td></tr>
     <div class="related">
       <h3>Navigation</h3>
       <ul>
-        <li><a href="#">extractframes v0.15 documentation</a> &raquo;</li> 
+        <li><a href="index.html#document-index">extractframes 0.15 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
         &copy; Copyright 2010-2011, Thomas Grenfell Smith.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.5.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>
 </html>
