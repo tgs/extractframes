@@ -18,7 +18,10 @@ way you'd accomplish frame extractions.
 
 def extract(infile, outfile, ratio=None, in_frames=None, quiet=True, 
         out_count=None, out_offset=0):
-    if not os.path.isdir(os.path.dirname(outfile)):
+    outdir = os.path.dirname(outfile)
+    if len(outdir) == 0:
+        outdir = '.'
+    if not os.path.isdir(outdir):
         raise IOError('Destination directory %s does not exist!' % os.path.dirname(outfile))
 
     if ratio is not None and out_count is not None:
