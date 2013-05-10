@@ -17,6 +17,10 @@ FMT='%05d.jpg'
 function check_results() {
 	FIRST_WHAT="$WHAT"
 	trap "{ ls $OUTDIR; echo FAIL \$WHAT; rm -rf $OUTDIR; exit 255; }" ERR INT
+
+	WHAT="$FIRST_WHAT: Output directory exists"
+	test -d "$OUTDIR"
+
 	FULL_FMT="$OUTDIR/$FMT"
 
 	WHAT="$FIRST_WHAT: First frame doesn't exist"
