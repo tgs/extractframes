@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import progressbar
 import shutil
 from framesource import VideoFrameSource
 import tempfile
@@ -46,9 +45,13 @@ def extract(infile, outfile, ratio=None, in_frames=None, quiet=True,
     iterator = rateconverter.convert_integers_by_iterator_ratio(ratio, in_frames,
             dest_offset=out_offset)
     if not quiet:
-        pbar = progressbar.ProgressBar(widgets=['Copying frames to destination',
-            progressbar.Bar(), progressbar.ETA()])
-        iterator = pbar(list(iterator))
+        try:
+            import progressbar
+            pbar = progressbar.ProgressBar(widgets=['Copying frames to destination',
+                progressbar.Bar(), progressbar.ETA()])
+            iterator = pbar(list(iterator))
+        except (ImportError, TypeError):
+            print "(For a progress bar, install python-progressbar v. 2.3)"
     for src, dst in iterator:
         source = frame_source.get_frame_file(src)
         dest = outfile % dst
