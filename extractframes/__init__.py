@@ -52,6 +52,7 @@ def extract(infile, outfile, ratio=None, in_frames=None, quiet=True,
             import progressbar
             pbar = progressbar.ProgressBar(widgets=['Copying frames to destination',
                 progressbar.Bar(), progressbar.ETA()])
+            test = pbar([1])
             iterator = pbar(list(iterator))
         except (ImportError, TypeError):
             print "(For a progress bar, install python-progressbar v. 2.3)"
